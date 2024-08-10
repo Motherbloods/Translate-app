@@ -4,22 +4,37 @@ const {
   LinkOutSuggestion,
 } = require("actions-on-google");
 
-const app = dialogflow();
+const app = dialogflow({ debug: true });
 
-// Pastikan nama intent di sini sama dengan yang ada di Dialogflow
 app.intent("voice open app", (conv) => {
+  console.log("Received request to open Translate app");
+
+  // Menggunakan fulfillment text dari Dialogflow jika tersedia
+  const speechText =
+    conv.intent.fulfillmentText || "Membuka aplikasi Translate untuk Anda.";
+
   conv.ask(
     new SimpleResponse({
-      speech: "Certainly! I'm opening the Translate app for you now.",
-      text: "Opening the Translate app...",
+      speech: speechText,
+      text: "Membuka aplikasi Translate...",
     })
   );
 
   conv.ask(
     new LinkOutSuggestion({
-      name: "Open Translate App",
+      name: "Buka Aplikasi Translate",
       url: "myapp://translate",
     })
+  );
+
+  console.log("Sent response to open Translate app");
+});
+
+// Fallback intent untuk menangani permintaan yang tidak dikenali
+app.fallback((conv) => {
+  console.log("Fallback intent triggered");
+  conv.ask(
+    "Maaf, saya tidak mengerti permintaan tersebut. Bisakah Anda mengulanginya?"
   );
 });
 
