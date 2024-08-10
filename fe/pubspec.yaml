@@ -55,6 +55,7 @@ dev_dependencies:
   get_storage: ^2.1.1
   provider: ^6.1.2
   flutter_typeahead: ^5.2.0
+  uni_links: 
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

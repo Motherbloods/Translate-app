@@ -13,7 +13,7 @@ class MicButton extends StatefulWidget {
 }
 
 class _MicButtonState extends State<MicButton> {
-  stt.SpeechToText? _speech;
+  late stt.SpeechToText _speech;
   bool _isListening = false;
   String _text = '';
 
@@ -25,13 +25,13 @@ class _MicButtonState extends State<MicButton> {
 
   void _listen() async {
     if (!_isListening) {
-      bool available = await _speech!.initialize(
+      bool available = await _speech.initialize(
         onStatus: (val) => print('onStatus: $val'),
         onError: (val) => print('onError: $val'),
       );
       if (available) {
         setState(() => _isListening = true);
-        _speech!.listen(
+        _speech.listen(
           onResult: (val) => setState(() {
             _text = val.recognizedWords;
             if (!_isListening) {
@@ -42,13 +42,13 @@ class _MicButtonState extends State<MicButton> {
         );
       } else {
         setState(() => _isListening = false);
-        _speech!.stop();
+        _speech.stop();
         widget.onTextRecognized(_text);
         context.read<TranslateController>().translate(_text);
       }
     } else {
       setState(() => _isListening = false);
-      _speech!.stop();
+      _speech.stop();
       context.read<TranslateController>().translate(_text);
     }
   }
